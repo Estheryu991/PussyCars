@@ -4,3 +4,8 @@ a Raspberry Pi and some other hardware to modify a remote-controlled (RC) car to
 # Ball Tracker 
 
 https://techwithsach.com/build-a-self-driving-rc-car-using-raspberry-pi-and-machine-learning-using-google-colab/
+
+
+https://towardsdatascience.com/deeppicar-part-2-8512be2133f3
+
+We are implementing OpenCV and still working on it. 
