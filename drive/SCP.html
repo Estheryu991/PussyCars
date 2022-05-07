@@ -1,0 +1,804 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+        
+            <title>SCP Linux Command – How to SSH File Transfer from Remote to Local</title>
+        
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        
+            <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Roboto+Mono:wght@400;700&display=swap">
+        
+
+        
+        
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism.min.css" />
+<noscript><link rel="stylesheet" href="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism.min.css"></noscript>
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+    href="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-unescaped-markup.css" />
+<noscript><link rel="stylesheet" href="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-unescaped-markup.css"></noscript>
+
+<script defer type="text/javascript" src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-unescaped-markup.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-markup-templating.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-bash.min.js"></script>
+<script defer type="text/javascript" src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-c.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-clojure.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-cpp.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-csharp.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-css.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-docker.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-elixir.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-erlang.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-git.min.js"></script>
+<script defer type="text/javascript" src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-go.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-graphql.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-haskell.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-java.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-javascript.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-json.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-jsx.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-kotlin.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-lua.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-markup.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-php.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-python.min.js"></script>
+<script defer type="text/javascript" src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-r.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-ruby.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-rust.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-scala.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-sql.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-swift.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-typescript.min.js"></script>
+<script defer type="text/javascript"
+    src="https://cdn.freecodecamp.org/news-assets/prism-1-16-0/prism-yaml.min.js"></script>
+
+
+
+        
+        <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/news/assets/css/global-26e2f3cde9.css" />
+        <link rel="stylesheet" type="text/css" href="/news/assets/css/screen-8a557108e9.css" />
+        <link rel="stylesheet" type="text/css" href="/news/assets/css/search-bar-124f5f949c.css" />
+
+        
+        <script defer src="https://cdn.freecodecamp.org/news-assets/algolia/algoliasearch-3-33-0/algoliasearch.min.js"></script>
+        <script defer src="https://cdn.freecodecamp.org/news-assets/algolia/autocomplete-0-36-0/autocomplete.min.js"></script>
+
+        
+        <script defer src="https://cdn.freecodecamp.org/news-assets/dayjs/1.10.4/dayjs.min.js"></script>
+        <script defer src="https://cdn.freecodecamp.org/news-assets/dayjs/1.10.4/localizedFormat.min.js"></script>
+        <script defer src="https://cdn.freecodecamp.org/news-assets/dayjs/1.10.4/relativeTime.min.js"></script>
+
+        
+        
+            <script defer src="https://cdn.freecodecamp.org/news-assets/dayjs/1.10.4/locale/en.min.js"></script>
+        
+
+        
+        <script>let client,index;document.addEventListener("DOMContentLoaded",(()=>{client=algoliasearch("QMJYL5WYTI","89770b24481654192d7a5c402c6ad9a0"),index=client.initIndex("news")})),document.addEventListener("DOMContentLoaded",(()=>{const e=window.screen.width,t=window.screen.height,n=e>=767&&t>=768?8:5,o=document.getElementById("search-form"),s=document.getElementById("search-input"),a=document.getElementById("dropdown-container");let i,d,c;s.addEventListener("input",(e=>{i=e.target.value})),o.addEventListener("submit",(e=>{e.preventDefault(),function(){if(d=document.getElementsByClassName("aa-cursor")[0],d&&i){const e=d.querySelector("a").href;window.location.assign(e)}else!d&&i&&c&&window.location.assign(`https://www.freecodecamp.org/news/search?query=${i}`)}()}));const l=autocomplete("#search-input",{hint:!1,keyboardShortcuts:["s",191],openOnFocus:!0,appendTo:a,debug:!0},[{source:autocomplete.sources.hits(index,{hitsPerPage:n}),debounce:250,templates:{suggestion:e=>(c=!0,`\n            <a href="${e.url}">\n              <div class="algolia-result">\n                <span>${e._highlightResult.title.value}</span>\n              </div>\n            </a>\n          `),empty:()=>(c=!1,'\n            <div class="aa-suggestion footer-suggestion no-hits-footer">\n              <div class="algolia-result">\n                <span>\n                  No tutorials found\n                </span>\n              </div>\n            </div>\n          '),footer:e=>{if(!e.isEmpty)return`\n              <div class="aa-suggestion footer-suggestion">\n                <a id="algolia-footer-selector" href="https://www.freecodecamp.org/news/search?query=${i}">\n                  <div class="algolia-result algolia-footer">\n                    See all results for ${i}\n                  </div>\n                </a>\n              </div>\n            `}}}]).on("autocomplete:selected",((e,t,n,o)=>{d=t?t.url:`https://www.freecodecamp.org/news/search?query=${i}`,"click"!==o.selectionMethod&&"tabKey"!==o.selectionMethod&&c&&window.location.assign(d)}));document.addEventListener("click",(e=>{e.target!==s&&l.autocomplete.close()}))})),document.addEventListener("DOMContentLoaded",(()=>{dayjs.extend(dayjs_plugin_localizedFormat),dayjs.extend(dayjs_plugin_relativeTime),dayjs.locale("en")}));const notAuthenticated=!document.cookie.split(";").some((e=>e.trim().startsWith("jwt_access_token=")));</script>
+
+        
+        
+    
+        <script
+            data-ad-client="ca-pub-9482786369113753"
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+            crossorigin="anonymous"
+            async
+        ></script>
+        <script defer src="/news/assets/js/toggle-ad-layout-dbb6ee71be.js"></script>
+    
+
+
+        
+        
+    <script defer src="/news/assets/js/fitvids-5d12072cbf.js"></script>
+    
+    <script>document.addEventListener("DOMContentLoaded",(()=>{const t=document.querySelector(".post-full-content");t&&fitVids(t)}));</script>
+
+
+        
+        
+
+        <link rel="icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon.ico" type="image/png">
+        
+        
+            <link rel="canonical" href="https://www.freecodecamp.org/news/scp-linux-command-example-how-to-ssh-file-transfer-from-remote-to-local/">
+        
+        <meta name="referrer" content="no-referrer-when-downgrade">
+
+        
+
+        
+    <link rel="amphtml" href="https://www.freecodecamp.org/news/scp-linux-command-example-how-to-ssh-file-transfer-from-remote-to-local/amp/">
+    <meta name="description" content="Whenever you&#39;re working with computers or any electronic device that has storage capacity, you might need to distribute or share information and files in various ways. Some of the most commonly shared files include audio files, images, videos, pdfs or any form of word documents. Most of the time, the">
+
+    
+    <meta property="og:site_name" content="freeCodeCamp.org">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SCP Linux Command – How to SSH File Transfer from Remote to Local">
+    
+        <meta property="og:description" content="Whenever you&#39;re working with computers or any electronic device that has storage capacity, you might need to distribute or share information and files in various ways. Some of the most commonly shared files include audio files, images, videos, pdfs or any form of word documents. Most of the time, the">
+    
+    <meta property="og:url" content="https://www.freecodecamp.org/news/scp-linux-command-example-how-to-ssh-file-transfer-from-remote-to-local/">
+    <meta property="og:image" content="https://www.freecodecamp.org/news/content/images/2021/09/uide-to-writting-a-good-readme-file--3-.png">
+    <meta property="article:published_time" content="2021-09-21T21:41:38.000Z">
+    <meta property="article:modified_time" content="2022-01-11T23:06:40.000Z">
+    
+        <meta property="article:tag" content="Linux">
+    
+        <meta property="article:tag" content="Information Security">
+    
+        <meta property="article:tag" content="file sharing">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/freecodecamp">
+    
+
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SCP Linux Command – How to SSH File Transfer from Remote to Local">
+    
+        <meta name="twitter:description" content="Whenever you&#39;re working with computers or any electronic device that has storage capacity, you might need to distribute or share information and files in various ways. Some of the most commonly shared files include audio files, images, videos, pdfs or any form of word documents. Most of the time, the">
+    
+    <meta name="twitter:url" content="https://www.freecodecamp.org/news/scp-linux-command-example-how-to-ssh-file-transfer-from-remote-to-local/">
+    <meta name="twitter:image" content="https://www.freecodecamp.org/news/content/images/2021/09/uide-to-writting-a-good-readme-file--3-.png">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Hillary Nyakundi">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="Linux, Information Security, file sharing">
+    <meta name="twitter:site" content="@freecodecamp">
+    
+        <meta name="twitter:creator" content="@larymak1">
+    
+
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+
+        
+    <script type="application/ld+json">{
+	"@context": "https://schema.org",
+	"@type": "Article",
+	"publisher": {
+		"@type": "Organization",
+		"name": "freeCodeCamp.org",
+		"url": "https://www.freecodecamp.org/news/",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "https://cdn.freecodecamp.org/platform/universal/fcc_primary.svg",
+			"width": 2100,
+			"height": 240
+		}
+	},
+	"image": {
+		"@type": "ImageObject",
+		"url": "https://www.freecodecamp.org/news/content/images/2021/09/uide-to-writting-a-good-readme-file--3-.png",
+		"width": 1200,
+		"height": 630
+	},
+	"url": "https://www.freecodecamp.org/news/scp-linux-command-example-how-to-ssh-file-transfer-from-remote-to-local/",
+	"mainEntityOfPage": {
+		"@type": "WebPage",
+		"@id": "https://www.freecodecamp.org/news/"
+	},
+	"datePublished": "2021-09-21T21:41:38.000Z",
+	"dateModified": "2022-01-11T23:06:40.000Z",
+	"keywords": "Linux, Information Security, file sharing",
+	"description": "Whenever you&#x27;re working with computers or any electronic device that has storage\ncapacity, you might need to distribute or share information and files in various\nways.\n\nSome of the most commonly shared files include audio files, images, videos, pdfs\nor any form of word documents.\n\nMost of the time, the information being shared will be private or confidential –\nmeaning it&#x27;s meant for a specific person or a group of people, so protecting it\nis essential.\n\nWhen it comes to devices like mobile phone",
+	"headline": "SCP Linux Command – How to SSH File Transfer from Remote to Local",
+	"author": {
+		"@type": "Person",
+		"name": "Hillary Nyakundi",
+		"url": "https://www.freecodecamp.org/news/author/larymak/",
+		"sameAs": [
+			"https://larymak.hashnode.dev/",
+			"https://twitter.com/larymak1"
+		],
+		"image": {
+			"@type": "ImageObject",
+			"url": "https://www.freecodecamp.org/news/content/images/2021/11/WhatsApp_Image_2021-10-18_at_10.33.36_AM-removebg-preview.png",
+			"width": 616,
+			"height": 405
+		}
+	}
+}</script>
+
+
+        <meta name="generator" content="Eleventy">
+        <link rel="alternate" type="application/rss+xml" title="freeCodeCamp.org" href="https://www.freecodecamp.org/news/rss/">
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+<!-- Web Monetization (https://webmonetization.org/) -->
+<meta name="monetization" content="$ilp.uphold.com/LJmbPn7WD4JB">
+<!-- end Web Monetization -->
+
+
+<!-- GAP -->
+<script>
+  Function("9!E$QV^T\x3cZaAySX)5`_q)5AiNtR{JsdDScjiC\\]Rb{\x3cj1'A4=_3UvOGN7{HU\"FJ+ML5\\,,1kN)y$5GM@-^Q5'kT!&l8`)'\x3cABVYg'@?CBum3`F{+3R5mcS A3^0Y$M^\\Ocoo#]u4M#avEJJ#0%,$0XwE>cFBnP]D5f8$C,),!T0D\x3cMCS>gQLs\x3ca#ME>k757wLo}Y3JyM$g@i\"Fg60R:n`>@#Lk#[*ML].PU+-Py5ME>k757w=mEq$gCW9dUBx^uLH{bv>$5$v%,q'eMz/jQ1yJ^4GEPiO>5i'n0U3GdMSuW=XUa//GF'C9$p(^VM*IAS2dQT.\\a+5U8iF(L&9\"\x3cb36L@=^Y3%D^*&=DxH@@-=g;q|v9\x3cSj M6kPa'U4^\x3c,2r9^HU\x3cVT@;sWi-O.4MO=i-5estn+L#OjC.[DCqUE/&W^i=//-/u5P#?MVSg B3QT8'O8h)1&iLb$m4MeQ.iX@s`}_6\\BoG^^{zg\"V,WZe;#D2i&e+/Tpd;7(rvkDg'@QN>gF3yJ\\//G(p.)(vwn*S5edE>cFBnP]LH[,j:I9e%w#$#@U]zZWXs|}P5{8)/(7I!m0PxN X{nS3-aa+4O;m+(C-LgX[AGCM0iKgsjxM\x3cV'mF2^xlgy\"xg?C-{RZsB\\+H]/)886l9^Eq|gJD7\\W6CrsJ*l9c1)7,:%0svGC@;GHAtVa)&4/h11*w9\";n\x3ceSzH%jXj|TR3E6g)&(,@Wxtohki5dF/yJ^4MP8j\x3c2&s}$>tB[ex?VULt|aR(E:@675mvl^`a\x3cKDOZjgnGu5EdT8c^22}^,N)CbcI$cMB|T!&l2`6*7l>*yk9aMz;#J3y&]:3I+nh\x3coe ^DL>[k_P|m\\B|,5ML+i/7+-wh0m+\x3cP]*2qXh|X_\"z))4(1k'aWH>deZ?VULq|R!\"=_#4O+e&!#n1WJk1VVTjjoSAgM!LI2Alt,H\"@vDFRjKwFc;3ND+G^^s?e#UzOF\\SX 4zOR:*O4#-M1-.k#[*ML].420oFR:MG+ou:1T%h.L'OW#.hF@nQc53f+'6J?\"t!kI}@ASU\\HBUS^:0T?k-p),v\"HU\x3csYD7jP3wBQ2&xE+R&2rwb%\\'\x3c@K./b\\$^y2\\F;i+7,s!!#q#eRfDkD@%Sy5\\CL`R1J?z_DfxWZ^X2 i-Od2-{a8N5^Ssc#J)gED=DZ\x3cUS^6&R:tj(6g%b.[$MdDScjU#]e5*DD+c^^vPo-PwYlw;#F=sGX-6R']4(J-%^2\\'IYN+_H1yyTP0R/b11$pU^1J'DNS8g{=1Pa/(I4\\4h(xK_3UvOGN7{jIwFc;3NDjT*(xPhJNxOvE>cFBnP]LH[8`\x3c85r1hJ]tGSDFrm=wJV//A2N-7[s?l#[RJjR.i{4zOR:*O4#\x3cJ>vvm3Y#YC:7R B$^*\x3c\"RDdc92muwLfPvRk?VOCjkda\x3cE4p5(5ese#!+JGCG%biBU{+/U3`:$%pv82sxISL.gD0qF)5ME4p5(5ese#qvJLE2\\X@fC[+YV5d,AQ%N62svJLE2\\X@fC[+^TR^71)mxn0HuGCw8#F=sGX-6R']4(@?z8D\\ARPH=VE:j|e5*DD+G^^x?p0P)\x3c@K.4WZ|SX:\"B2``92muwL$PvMk@gLBfC[+=\\5)?5,xr[*L?PjU*aX3BU{\x3c\"L;`D?22)Z*\\xbve>#J3y|cR(E:wD2Okvm:cyPLB=^R\x3c-hj8&T;m6A(_!V;q*gQD=2WZxFcB=ORn-7?\"wn,J)DMMOijIwFc;3ND`#1 A'vE\")MWZvWM3hU{*&F/i-q5s#^0[.aCi7!XU$DP:$HLoO>@vvm3Y#VMA3ZFB?Fy53I-d6$/Hvl!Y|KRN;/RXtSX-*N'gm(7>z8$\\#>RH8ciU\"ST:6R4y7O9e}n#dMJjF.i\"=3HT:YF;i+7,s!!Eb2eMQ2\\L\x3cfMB+5x/:.81g'b-U;OeZ;ZWCwOm+zN#8\x3c@[s?l#[RJjR.i{4zOR:*O4#-J>vvm3Y#YC\\Frm4BGd4$T/j6I(-.k#[*ML^.#K/x0f4oR5k-57}9y{FwP^fMyi:-FyF ?*pHM>zre3LMISK5!H\x3czNT8\"B2``BR#:%=u\x3cXhRdBDBmm_58fV'YSJ0u6$\\#>RH8ci3.\\U53f\x3c\\:A1AA%2$DpsvW(tc5rM+ML+i/7+?!5#s!@LF=]|\x3c0jv:\\f:8s$7l?b+\\!aR=.#F6fS25%EeoN1J0D-OwLjtp\\(jUA{ W=Tb9dRZ?%^2\\'I\\E>cFBnP]L&gAm-78v!w4V|?\\md2 3+eu+\\nM'\x3c^ne'aJP\"PJe=SWjC} ZKfV-ZWY6C.L|>@eb\x3c|mBB.P:)l/h=/IxomZ%QjoiZ'wb9w(]OwM'N7!A'7Z%Doe{e3qK$kea'U4^\x3c,2r9^HU?OeZ?dL2%o,a\\TJ!N7^5:%2%C_be.2EBtBu+Hl8`8/$gv!KBP8gaV!cN.h*,0RLq)5Av=hHP?PyCOcjXf|]+8^em:$\x3c,v'*L#BRGP!Fijm[+/G:cR/^y9^JSxIES1|m4Boy9\\n_^SNABA4EHn>;zOkR7i_}PUrPmc)^,\"6DZPaGz.PF+3DW'3#5_-b7,A\"E%Lo{HT*zfn}%X^IQ0Y[,BE/[P@mrw[( iBJ.TYoM&\x3cK/-M)[m$^rqR+uU*u#^0cZ/Rt7vzg%syMMLj]D@HPS+GRb.]`5/F2VYQjm|; v_?S-T^RO/\\[U7:\"HSPPdSe%\"A?Gv_7A8y>^$2{h'U;[^fbgHBzS]D5|T:>O5i#e}Jxak;V$JX'loMYA:j*I9-0%.$yPLB=^R\x3c-FvA3E:p:1Ih9^Em\x3cd+@=]o4qP^8G$'o-O1s*!EtKopD\\|jQx^y.\\F;i+7,s!!#n0MCS>gQLRBc.MF2j75IR(f L'g+ !T6mK&Nmm4iBksKi:'2VfOPH7\\i_;hlP:{,p6&7m\"gDL?IhSPpY/w_aP0{6#6JMmN!0$$eDT7XW7tOuM\x3cV'mF(^v\x3c6M}Fjqs\\-r_@ST:6R4y-^ne'aJP\"PJe.SHjC} YKoB`OMI,9^z$xd+@=]o7rV[L&>+9d_X0G*:L\x3cb\x3cDe3!]9h-b]nM*;@J?%^2\\'I\\E>cFBnP]L&j4$C)2v9o}Y3Oy:&!Ui5za`&l2`6*7l7}2s%PQGOZoAzCb:3I4bN5Mv\x3c6Op;klg7{jjCovMHyM6:(7y%g\x3c[AEMH7{c['hlL7f+&NNRAN6#s|IBDADIT' oM^`cZ''8A33>kr:BTdujW-U.:MJ5d6IC03\"Gg>[v_I|l6-JuMHj4$R,J#=`YM*IAS2dQTjhj8&T;m6A&s!l-SxgCQ;dUZhB[2GC5i;2/i=^Ed?=yE>cFBnP]L&j4'\x3cJ>zrk\x3cYP@jB>gU3sUC'3G+oR2^i?m}Yz@Ri22QJ#Sy;\\TBw7M$Awn,J)DMMOZm\x3c.\\U53f\x3c\\:A7A.vHYPihNdDE8jDcR&N:m1(6,!\"WYOJjK.cJBmzaOJgAq)5AmNhwYpeSz2Pq+1B,/zo#6\x3c|8aNeDL?Ph@PrU3yVa4?TC#-M>g(k0L#O2@;\\HB?\\V+5x,p6&7m\"gDn0MCS>gQLn^lP5A8b-7[!x^2!yPLB=^R\x3c-hj8&T;m6A8#0%1Yv JD6ZQB?\\V+5x,p6&7m\"gDn0MCS>gQLz^lP1A:c`>*i'3$\\#>RH8ciU\"ST:6R4y)O2vz`'UtG%D=#D>uMhL5H/nOO6pz\\#m\x3cgK@9{i4zOR:*O4#-J>vvm3Y#YLcMg iBF.4YTJ!7^^Av82!xXefFr`U3QP:)y8`\x3c85r1_3UvOGN7{jIiF[+5ED`T&8v%^,[g\x3cPF.im2jMT:&^+)\x3c$5kvmHKxGCS.sHZxSRi-E3`67Mhve#[xYCk9VW6$^y3\\F;i+7,s!!#q#bYS;n^@jUd8/^+#6J@grm!O;@eZ0{HU$^y=\\F;i+7,s!!#q#bYS;n^7kgo,6N)o121&N62`%@MEGZj@jUd8/^+#6J\\mw!#k9[DT7XW7tOoa\\T?k-2)$v'&H#?JDlkH\x3cyha+5U8iF(Olrg\"Sx TD7ii\x3c.^R'5C.#-J>k9^Ed2e#z/jQ1yJ^4GEPiO>,j9y$\\#>RH8cciBUh6&O,y-O$hu>4L#O*H\x3ciH\x3cjSvA&l)j667v(\\2V'gL@6Z|DfSm:\\;#':^|a=bYBpeSz$Rm/BGd4$T/j6I(-.o}Y3IyQ$Z@gwFc;3NEz6GG,!!Eq'6C\x3cdkR7i_}P@nMxR&^p9^Hgt?B$?ZQBQJb:&N+mHM>zre3LMJd_*YGq{F]:kI9o-1(v3%DM*IAS2dQTjkaM\x3cV'mF2^r?_'Uw$LC.miTkV])5I5iN1J!%^2\\'I\\MUZY3sU,a\\EC$O\\5i'n0U@j]zdd\"DtJSD5;5XT38wy!0nM>dfUVS>qZu:)I9')5*y ^,[(b[fPrjZtSX-*N'gm(7?z_DgyPLB=^R\x3c'|,::P+j.A(2&^2()OPH+jW3.WP8?FagN(M&&^2()OPH+jW3'kj\x3c\"L;``2I&&^2()OPH+jW3'ku,6N)o121,'%0n0Q?QGd \x3c3GX4%)4_-;I,wn,J)DMMOZjIwFc;3NFj6CLi?^4L#Oyzdi`U.za+5U8iSRBANhBk|6M\x3cf{L)t>uj6N)o121,%\"JI|IBe.|jXyIX9Hx,#OO$t#e7m)CGRSVU5zNT45SMxOJ@-?h0PzDL@5\x3cHB@G^8GV'mF6^j(g![|JLe8|^DfSm,\\N!j%M6Aw'#]xIRi-2IZtOy\x3c\\`5iHL60#6>M*IAS2dQNB|c?1E5aF(|zn8#B+8jA2cGTjh)46L2'0^N5=rYM*IAS2dQTjhjL1{+$eNRAN6&k9aFz=PR+3MT4(T.(WJ[lN&Md?ByE>cFBnP]L/gA(W^^Ay}BW9_Ue9!QU1UJ5|l,j:f$gy!DM*IAS2dQTykaM\x3cWL{.81g'b-U5vySBeH=k_cc5l(d6'Ii:32q#bhQd2 6+e_JEWLkR1J#:\";\")gNT\x3c]i)bhy/MP;n0I\x3c-=nJW*NFe0|m>+eu+zV#868/p:%4V|?\\mH2 3`WLJELL`R9M!&^2!yPLB=^R\x3c-FvA3E:p:1A}9y$\\#>RH8cciBUh6&O,y-`(2sb,K;OFH\x3c|{\x3czM[MKEC'/(7>wn,J)DMMO|^@jUd8/^6xEJMg9\"JJtGJe.!VX-Gd4$T/j6I(-.o}Y3OyAOZjgw\x3c^#\\F;i+7,s!!EbzaCfSiiU$kSJEDL#.81g'b-U;bYQ.iX@s_PL0gC$RI)y!\\2P$IdDSijIwFc;3NDoeI8_!'$P#?'M-Z[T-Gd4$T/j6I1-.k#[*ML]7#HDjOca\\{+xOJ ,'\"HfCbv@Oco4nOSm/D+sNI)y!\\2P$IdMPpU3yVa4?NR`>(1xN6YL2befF|mTkV])5I5iN(J!%^2\\'I\\Sdco4nOSm/D+sNI)y!\\2P$IdMPpU3yVa4?NR`>(1xN6YL2bei?dL2-SJ:|{\x3cj1'A4:44H'YR\\P|`U.^y*\\n__b1Opvg%[{tgh-|VTihlCK/a{=1'iwb,Lw[]z=nS3tGm=*N*j?GG{zg\"V,e.z7ZZLXFcLnB0`+7Oovr1mbbeiA2^K1/,UK)aa=1&xzh,mxeLfD^IT&nM.5T6ne[}3m(Ks)@QSOZjJ#F{8&P2\\+(I3oa2[%N{w%$?[4koFHl8`8/$gv!KCBgfaV!cN.|,a-O)\\\x3c,2r?a-Z)bPD=jU\x3c%o*/'f+);7$v'lsP)CdK8XDBnP]R1R5o7&2p\x3cyKt5dLk8|j@jUd8/^T6.25,)Z0e)vYV2cG=|yjC>j88tLL0\"6Lq|v-A3ZFB3LT?4f=d6'2{:4-#|gJD7\\W6@PxOH[\x3c\\:A8AzT-DNDDeHEo6fTu;HdJz=O6xrk2ZjDRGOuZ3gLX:AgJ!H:,ruh5g4vyTPpY/w_Pa7O/_FQ\\x%r9HPRGM-dZ)z>l)\"T)cN(J!th,[|ISDFVbiB0sJGTRr11's*T3DPVPD//DXjOc8*E95)A,r&m}Uv@MEGDE8jDccnB0`+7Oi!m0PxNd@P#F=sDP:GADd667e!\\#VyY}Q;V\\k`\x3co2&N-o0CMe?e#UzOF\x3c&/>+.yJ#>gCx:(7y%g\x3c_nM;z=!UK13,,6N)o121,v%,n0Q?QGi \x3c3XX4%O=':^:m!]-^?JyS$Z@gnGu5H[/aN5|inxY$$gPD/yg;-gU;/C:d71I-.k#[*ML];PH+BP{8&FC$OM5_vV'U(O?M,ZR4%0Q0&C:$C)2v9o}Y3DyE>cFBnP]L/gAd.I22vg2Y|@Qk/^Q2-gU;/C:d71Ii:t0L)PPMGZ>\\b|,a/]M$O5(x(k,gvJLS2cX3'zS+-E:`F5|inT,D2eSzW!DiTCY+$TRf-\x3c6,%T#D\x3ctSy*#O3sHc.ZUO&O,IelnynNAMQOkD@%D,,6N)o121,!%2n0DDe;PH+`OLa\\{:$:(7y%g>J$IRH7jHN@NuL'U4^\x3c,2r9\"9YxOSQ7sU)j>J4|{:xOJ@0}6LqyvMk.cW@nFb_-z,)4(1k'aWS>deZ?VULx|U!-=_^N6|4n%1BD8e\\FrH:xFm8zE#!L'(pvm#e'6C\x3cF!7ikV])5I5iN(J!u^*L)@\\W$Z@K1$,=*N*j?O'stn+L#OjB;ZDBj&[+.E4oRt^{zg\"V,g+T=VW7tO>(4E8q-5McNmD{Ipeih2BZHm[5\"D/i/MmA!n*S?EyKOP@X'Qd9)`Pv>$/yv3$\\#>RH8ci3.\\;a&j,p6&7m\"gDL\x3cV%k8ci'.kDL lg):($h,\"WM$MdU*ga\x3cBoy:\\+_ib7Opvg%[{tLhR|^DfSm8\\T!i%\\z,%\";d;b[\\P#R0oFR:K-a{YOQ2DyH/PVRX9Z{NiObFKU8gq(\x3c>3m(x'LJv\x3c^Z3kay+/Co`A[C5\"/Lu/MOI@fIN$k3aAW=rT)5iv\\-Kx>?L9#R@lay7\\`*i;C^ANAJ[.KC|o#X@q,T?J`R{Qe[H\x3cyKg>#jT;a.3 k1a'U4^\x3c,2r9^HU\x3cVPD=jU\x3c%Zu+K(R`6&li,%,n2e%zOZ )bk>(+E)oT)5ivs#m0JLw/jQ1yJ^4GNMv:(7y%g>M*IAS2dQNB|c?1E5aF1G*v'.\\(CdMPrm3rJc^'U4^\x3c,2r9gEb+\x3cP]=2W6nT*8&T;m6A(2wh0,t>FeO[X\x3chUX5/f+$C5(x(k,exg?O9a\\TykJ4|gC$O@@-:%g$n8hJdDE8jDcR'R+`B(I!t[V.?Qv,S^{2tDd3&N:)/(7I}^+L#OQ!BID5SB\\+G`w>xjqX3\"JSxIES1!Kf';4 f5x3Zn1Z`MLVC0XOrM7:}1!6yCjQjkb&=kVM*IAS2dQTjk]P5gAq)5AvNqwLptGEOgjIkPaL7A8y7^Q0z6,\"$uGk5ZQ5yI*5JiMv>$5$(6'B$8w1Ojm@.^o,6N)o121&N62`%@MEGigRygaPGF;i+7,s!!#n0MCS>gQLWgTP3gC$OMu,v\";d?Jv#SZ{w1F_^aj*k`)8rtm'V#aCfDgHBzS]D/{l)-1&OvrH];@jQ.eO/hFuS{mSbRCC-=gHrDbwU*ga\x3c$kP^'U4^\x3c,2r9\"9YxOSQ7s$K1E)0KC^I=0%i%!>rDopq_)y\\5v\"XO`M'8[i#:%q$yPLB=^R\x3c-FvA3E:p:1AEN^;qkvDT7XW7tOuM\x3cR+o=51$RvH>PASM,iL=sgTM\x3cI,#-O2r_hlY$SWf=g\\Ijm^4mOtm7;\x3c,:v!H)>Fe.|^K$kHa'U4^\x3c,2r9^Eb+\x3cP]72/gnGu4H[\x3c\\:A7Awn,J)DMMOZm\x3c1UvA*FLz-J5i'n0U5[wU*ga@BO{'KOaiT%MmNgJJ?PyeW2 ijmX4%E>J.IC33\"[S$>?S2dQZuS^:0C5g`(J2%^.St>CeV/oV)nyFAgP\\c(Oqrm!O;h\x3cef/KByQbcYgcWU}P,lWKD>bdkQ|pU#]J#KCa#)|Qa=ZwvpbhKdV>^bkUa-O)\\\x3c,2r?i0V)JAN5 c[4ax7ZI,#G&Jvvm3Y#[^x2[i\\B|,)MI4_-;pj9e-JtOGN7#K=xU]'.EM$:(7y%g>gNDDeW2 ijmX4%E>J.I)-:k#[*ML_I0Y/w_ba$l:jr2:i%\x3c}Zxaei-2cV3axL4l3\\\x3c&+,@![!n9:k& ?Z. J${l#&JPJ\"/T>gpb9m&!Yi2pna\\RRd6'(|`_DZ\x3ceNzT&biBP{//D+su)Iw:%&$@j]zdgo7sET>nFL_OM\x3cA>*=$PJjH7YHFTGu*Hy8`\x3c85r1i:c4QbcO^\"G?`WM^`F5.LC33$^m*d^lI FW-MkBA`M'\x3cJ@,v'3Y!eLi.#I:fHbMZI,#\x3cJ7v,t#s$I.Q8m\\Tyhl)\"T)cN1J!h!#n2@JR.s:Tjhl+-S+y}I(-0%@$B9d|a]WBuT.^H}\"*$PP0-6*Vv\x3cRH8cgRqPR'5I5iT35s'h!V!WZ_1iW>xayj\\L5^)7,s!}BS$>?S2dQZmPb:=\\F{Rw^ \x3cyKt5dOk;ZS:fDTLN>\"%UMIj(g![|JLePpU3yVa4?HLkNiOy%egL.be\\P|lN4ax?GZRm-3/et^DtMhh_I|lN4B_/MD'o)81p\"\\)L'gAN6$VBfUX)NVU*)6\x3crt'(ZRQy_RZQ1tETyq)gj532rvg2m`bh'UZQ1PFhMK*alT63pzmDgB[e:WRo@jQ['$EL*`|Q1JVGiBe^_P#H\x3ciTF/5HLAT5(t}Z!L;hv:W\"z+0c|PA`M$Rr^j(g![|JLePp8Tdm2R&R8j:J\\j\"kD]tM\\Dd%m\x3cB,*+[NRg-1*xy4#p>bYU*gaBBOJ+|y{#\x3cJ@#=SYfDeCDd[X\x3chUX5/f+$C,),v'3Y!bGEOMiU&|,%M#R`:52v:t4H'YLzO;o;fUR.GmL:`|!2n$xs\x3cx9=URlP4hkBz=MVV ?\"W4@s)@QSOZoCwMvJE_+)=5/2%^.St>CeK!cN.ma+1L'^-IP`@'Ft?[^fUZQ2x8X:)f4$eIy,:xY$rg!k;ZD2 esoMP;n0I(-=@JL\"DRe.|m4zOR:*O4#O>,j9xvn0DDe#2b\\1`9M3E:p:1Az\"b\"edaex?VULj|2R$A2gN'2g(f#U)e^2jG,|YavP/{,p6&7m\"gDn0@jO*gH\x3cy/^*&dJ`T3$vvg25$?Ck;ZP={F2.*L*#-J@?v'1L)zRS;^ECyFuF\"S?i+CM&3\"HLANCShiW@nCd:&fFn:&C0g\"HLA\x3cBClkH\x3cy-X95E4`:ICp\"Z\"g?aDT7XW7tOuM\x3cNL$EJJ0v'}Kw TD7i/7xUT4&RL{-55s%yHmyPLB=^R\x3c-FvA/fM'wIJ#:\"HK$>SL.cWZmFP*MA6k-1'Gyb*K;@e\\F{jU?8u+H]+g;(A[9^E\"xGQDGLi3.^y4&{4\\>,*e'h0s(@LCiZD1tO{(*N*#6$9mxZ2V'bhS.2>NfQ_2*C'o1213+&5^,fDN;bnCwMT4$O*`,CM& n*[|K?Q=$I=wNz*\"T'{RC7i+mKW!\x3cGMIRm@j|U;/C:d71Ii:t4H'YLz.#W/l/P3&j:8-O2rak-_.tPD=jU\x3c%Gd4$T/j6I(0%\"9PyaDe.|jI{BaD0{8!L(Ow%\\Bk5.!1pE7NB|,4^)L`T65g=dE!CtGEOu6oW*?xA{a86GGW7}=Y\x3cVT@;sLixFcx*M+j=7I,wn,J)DMMO|^C3EX9$O4i-&7,:vEqD@pfSj \x3cjXmwGf,p6&7m\"gDn0?MB>bH\x3cymR5/T'd66Ii:}BmvGC@;IL;jPd:GIM'=O'm&\\-U#@ASO|m33Ta)EdLjcjIi?l0J?FefPrjU@V{5#S+m>(Ih\"\\3TxIRiDXK7qE;/4T^zVM6ysm0Lxs]mF|`q-Fy!\x3cE\x3c`67[&vk0V'[hN7/ICsDc/0NLiR5J!v^Db*MJw.#V@hk^4oR5sA[)y!\\2P$IdNPpU3yVa4?TLv6(:Y%eVV?@JD6ZQB?Fy8&L+\\;(fv%h0/tIBK.gVfskU/3Epj)'ie!]*L'NvE>cFBnP]L/gAq)5AxN[DU?@hDP0UT'M^'%`PiOM7,:v;n2eMMud3@tYh^/]MxEM>i)^,[M[JN*YcXtO),6N)o121,!\"9Pya]DUhU1#]PL&l9m+M(-:k#[*ML]7{jg{BaD3{,p6&7m\"gDn0Jbc{{RU1OuM>y+`N>8v}3#s(MAi/aD5xyJF/P+{%O&s!\\}[;J{:IhVi'j^#Y;#$R21T%h6`MASM,iL=sg]M\x3cR+o=51$'!9UxR3Q5/QXjMT3&N:5-M5i}^}Zx PQ8g+/sE[+3S^mR),vvE-Hw#?M-aH@xyaCH]Pj6o2T%h6`MM[fFr@U$^lP0Eam-I>xr`jH\"@v_pB*N1P]t3O>t`)8rtm'V#aCfDkD@%O,+MN+r{5/?v'#SxHCM=#V@h|]C>gPd-^5i9t2Hz)?L./c!H38ts`Pj6q5s+rVM*IAS2dQTjhj\x3c\"RDic(OrvpqY!eRz.#H:jNT45j88-O5i}^}Zx PQ8g+/sE[+3SPjc(Ojzk#3$\x3cB'*cG:jSb_*FLoT65g:t$V'aT@;sLiHmR'-LL_7&8qvg2q5.!1pE7N.kda'U4^\x3c,2r9\"9PAK?Q.cWztETJEIRk)5(r'G-KxgPD6dY3HIX2%f/$EM$AA%!$n8jR5^F33DP2-f:))77vz[3[xNex*1FZqF]-5H_\\QLJ!)Z0e!vA:*Rm4BM{4\"M+';^/2)Z*\\xt^R;XcMB|UJE`5i-55s%y=$PAbcIdQ:tBSF@{aaLG,2&^2()OPH+jW3-Gy9H]/);(7E'm0PuPRDOuV@hay4Hj/))''I)^,[_DQS.cH@-aT83O8{RI)y!\\2P$IdfDgiU1VuM>gM'1O$hu>4L#O*H\x3ciH\x3cjSuF-O'_HMIj(g![|JLe.|^=-FvP6fMxOJMx?i}YxIR-8YHkym_'3E4ot2'i?b,ZxMR!.[R@jgXP5g^_7&8qvg2s{@?CUVS>jOSg)I2_N,J#ve1L3MdfFrjXzF,,6N)o121,v%,q)ePfDgHBzS]D/E=#\x3c??,'6lY$HGR.|jT-Gd4$T/j6I20z\"9M*IAS2dQLzgTM\x3cT8tC&Iv?g#_)aCfPrF/yDWL&gAdN(J#0_3UvOGN7sDTjhj:3YA^N5Oxyk-^;@efFXDBhIu+H[/#-J@#wn,J)DMMGXi3.\\e'3^46-O's!^[V;@jU*aX3.yu4\\ERq)/8i=g\x3cP#NR@7XH=k_cc/x4`?A7,9_3UvOGN7{HU\"Fu4H]M$OO7lvgD\\?\x3ce\\,{i@BS{'1P2tN(Mr/uwD\x3cbjM.mWT.hlMH]P\\-^)y!\\2P$IdDScjI{BaD5j8'7M,0(69St=CKa%mAjOc^'U4^\x3c,2r9\"9Pyamc8Pq+.UW80WDj#R ?%^2\\'I\\N$&@K1Ua?4x!XR23wKTydNMCS>gQLn|j4&X:5)IQ-=m&Y$Rv@O&jXwFc;3N^\\NSJ#=y$\\#>RH8cciBUh6&O,yy\x3c0f\"eBk;D92BbE=qmX:&R'o75 Awn,J)DMMO|^@jUd8/^:c16@-=bWM*IAS2dQLfgXM\x3cR+o=51$wn,J)DMMOVjIwFc;3NDa=1&xzh,m|bYH/{WUyIa58^4`?Au}#^aY'JPeI\x3cH\x3cjSP:0RDd;A$p%^}K.YCW.XXBnOVRAg_a75I?(4E['TYH/{Wi6kaJEf58XG,_AV[YAMCS>gQfn\x3c}#^RRo052{/uDm$vPk;ZWCwOvJEOR^)//,%\"Hu\x3csPk7Z[B.esEGOajT&$p}!0q|6m\x3cP|o2tOTM3E:p:1AsLl5P)>Fe;2qXtesL*{!-L,|4n%-s+\x3cJT.RjXn\x3c}#H[)\\;(A4K\\}ZxYmw82LggST',y)\\;(A8Kk#[*ML]>#O/gF[OJjAq)/8iKbwvpeBN7Z{M6^*)\"S+y[[82}Z L!dgi;2L)6>y/\\;TXa&2r'b,\\xtA@\x3cZac?J,;MO6nT32t9\"H\\AOPX\x3c#S=ugv_$O4o118iL]#MtPJSa^IT&gu5\\f58=O7v,lEs!@LF=]!\\+e^!0l2`6*7l>*yn1Wr^d2L)5>sJQ_a81|Qa:\"9\\PiwB8cW7sVTC*FL.c^^ml)yk9a]NEqL)6>-5zn#!L,|5n5-BF8efDjo:fCT2\\I!,%\\%vvZ)d|Adsd2 7`oLJEURg)%(pMhwvpbYTUaD0jM,5zo#'7^,?sk#H XGEOdgRzm['#E277|Sa:t3s!\x3c@D52R)7>y;MO6nT38wy!'nN=PD*``=`qLJEURj86Ot\"iDn?PjS;nVZuP_LHy)j67,r(^;PPIjB*aOTjkdM>C'o++Ii:t'$nohD&!Ui5^U//A2gA>7A\"6Ld|AdrM^>\\bhc.3O=y1|RaLk#[*MLZ?VOCjyX!O=cd#R >)h'K3ihC8cHf&olCG;/') J#0vHJxvUH7YRE3GT:$HPg-^jqr`#qy@yV2cG=|mGqk(:o8s(u(^1[?NCz/jQ1yJ^4GEMv>$5$!6,L,YDDOZjgwFc;3NDa=1&xzh,mxbYH/{ITjhvA7A8y6M70%6wD?Dy^X!Xi&py'\\f+)+21w'k3J)JPk7VP31F{.\"Ssr6q5s#^0[.a^N9ZQN. TR0P+i`18p}\"WS;@h_8eH\x3c'kj\x3c\"L;``2I&\"i#U5edE>cFBnP]LH[8`\x3c85r1gYBpgQK2XHZhB[2GA8b=0(r'lEq;\x3cZ[/Zo>wPc55Y6`T23i!\"JH%KJXOiK7xk]M>gMxO\\9e%w!$xgF@\x3cDZ\x3cUS^6&R:tNC6i!]>nR@jR.cGfsV[2ZLL`RC6i!]>q0Q?K>Z{=-ab+/DF'N)8rtm'V#aeZ;ZWCwOm:\\;#);/,gv'!H!Gd@;\\X;jOc9Hj/8GQM,tu:MxgNQ8iRB QTR4E4_OO$t#e7m)CGRSijK.hlMZV'mF6^p9^Hg(@R1.fX3xU7+\"D+mHM>zre3LMJd_\x3cZW jRd+4Tl`)'(v3%DM*IAS2dQTjk]M\x3cT8tC9$v1mYZ;bj@9eOG-UW/4j'm/80i!m1nNMCS>gQLwm_;4HLV-M1a:%2dv\x3cRB1{WU\"UW80WDoE@J-0\"JV'DEH7VOsjUy*\\_U'>^B4L>DL?6YD?ZQB?aT83O8{R21>wn,J)DMMOZjIwFc;3ND_LG(,:v;q0@TD7i{NqPP*Aj5i`)8rtm'V#aCfD^IT&JvA*FLqO5(x(k,exaex?2b\\$^lP\x3cE\x3c`67[&}h}KxIB_SdQfkV])5I5iN(J!z_D\\PZmiH^j@jUd8/^+#O@@0.^4L#Ov_;ZD2 Tc'5E)c)1*i3%-UMASM,iL=sg^P\"j)$C,),u6=v?m]zdZo@jBS?rT'o-J5i'n0U3Jdfb^ITjmb:\"T;nd^R4A}BLANR@=jVh9o}M3E:p:1AmNxMq'v9\x3cSXiNjSa53`M'7IJ?)Z0e!vDT7XW7tOuM\x3cIazWM5AlVHV;bh@OuH@wPaFH\\B#,^B4=ZDg!J?CI|m/-a[5\"D+i,CJ0(}Bu4vyDUhW/yVbJEf\x3c8GRJ-04'M;ZLf;ZWCwOm2Gg_`-I>y%eVUnj;i8c3@tYh^'U4^\x3c,2r9hEb+\x3cP]22QZxMX)&fM61|RaNhHLAJND7#D>uMhL&j/$R8^%A4$V'aT@;sDi5kRa3y'7+O/i!`2ON\x3cghPpY/w_[a$;'XR)^pl)yqwvJ:XR|A-h{)\"L2#-M)0u\";LANCM-#D>uMhL&j:$EM2r_hlY$SWw5rjK$>vC>f4$R1@?&^JW'JRN=nS3BGTR1R5o77\x3ctv%kI}@ASUhHBUS^:0T?k-p),&^HMxbh:/jQ1yJ^4GgAd.It-.o}Y3@yM.la!-gU;/C:d71Ii:t$V'aT@;sQi5kca&y47\x3cO/i!`2ONIghP[R@-WP8?Rao#1 0\"6L\"$uPk*YG3i/^*&SRg-1*xy4Gp$bYU*ga7BS{'%D+_t2'i&T-DND\\H7hW/sDT5'^lOsmtg%b.[XGCL.cWknFu/K_T$`,Am!l2H#>CN/s+\"R-83\"G+@4(0i!mBk$@dHPr`U.zS5$U3`67Oeu]a]xIR+2hW3sFaLA$sHi21xvg23$\x3cBD-umTkV])5I5iNJ>vvj3L(O}M2bDBnP]j3A3`NI)y!\\2P$IdfDZo2nTR5/N+^\x3cIJ#:\";n\x3ceCk8WV3wWTL%O)p5(1x=t!O|GB+2hWf&oy96B:m-([%AvEd2eDT7XW7tOuM\x3cLL?7&8qvg2s%MMS8i\\>jko)3E'o-f/i ^,[5eYU*aX3?PuF$R+\\\x3c(fpvf#U)[he/jQ1yJ^4GgAq)5AiN!}YzPKD7iV)5>kBA`M)\x3c2vt#^0*tNCeP!QiHmP61L?#\x3c+,w=Tys(GGB.#F/qMu'3G;h-17w:\"WYxOSQ7u6oW*?xA{a8-`,i9gE!5$+&I2 ijes5&f4$R1@-:vEd?ASM,iL=sgvA$EJ!4I:m!]-^?[DD=XKN1\\e'-U+57ICjvm!O5edE>cFBnP]L&j4$C5(x(k,e*@dU8^GL5ke5*DD+R92muwLq;ASM,iL=sgvA7A8y\x3cM50\"%'q*eAx;ZWCwOm'&f:c16M,wn,J)DMMO[jIxXX:$HLaT/$fveEbv\x3cQDG%{BBFm//S:\\6&(swwnL&PCR=4HZzS[^&j88-A,r&m}Uv@MEGGH?zFb:Ed+)+/2rv8$\\#>RH8ciU\"Ua?\x3cR+o=51$v'!S$ICePrF/yDWL&gAxEIJ>)h'K3ihNd[X\x3chUX5/f5'1J>vvm3Y#YLD@s3@tNX9&fLa=1&xzh,m*e?fDZHT\"Va2YTPj6q5s+rVM*IAS2dQTyhjE'U4^\x3c,2r9^HU\x3cVT@;sWism^8*G/i)/jr#n2q'vLk8gL5nOP2dR8j:M2A!'-Y|BGM*a53xV[:KIaiT25mxb,H!-CP>ZVBNOX:KUaiT&/s!^\"0#KSSSV \x3c3ST90L\x3c`R&^r?k#Qx>Rx>ZiDtJSDOj\x3cj1'A4=o-PwYliO[X\x3chUX5/fMv>$5$!%$q(eBx;ZWCwOm'&f:c16M,wn,J)DMMOkjIxXX:$HLqT/$fveEbv\x3cQDG%{\x3cBGd4$T/j6IJ!%^2\\'I\\QfXi@.yPL0gC'>O/es^*$DtA@\x3cZa]?JUL7l:mA6Ot(l&mnjhuS!z+.knL5^/i;7$rt^-M3-CP>ZVB.ha+5U8i#TM:n41$+JGCG%m2BVkB5j\x3c)4$%i}6N\"v\x3cQDG'{@jUd8/^\x3c)\x3c5\x3cw?i3Z{a9oS)mX:>vPzrP_T%/ss!EDN>?R.stfwFc;3NDnc9Owvg2m\x3ce9pS*@ghBb+?r^m-78v!w4s(@LSO|m)8k$#ZC'n-AV>%^2\\'I\\RMyctJ\"3F@{a_T0(xyh\"k9[%${ubiBE{3&T.j,GGp9]HguJBXI!^DfMd+YSC$R7^rvp\x3c9xLSD\x3cii31EvPzqP2%\\&e&^\x3c{MOyDSko:fCT2\\u_^)6($H30L)PPM$(mebzR'4ED3`5(x(k,e+gQD7iiU1\x3c!P/fMXa&$wvwU!'@RT;caD3Ua?4l6p;+I_J%Mv?emo&|m)9kR+MB/i,I:m!]-^\x3caRi2|@ghBb+?oT5:(7y%g\x3cMPQjR.cWT.kJWKoVXa&$wvwMvMMCS>gQL{mb+/TL$R|S0!!EDN>?R.sr^?ST:6R4yVB^Aw'1[tOSRMyi43Tc'5U97WQQ\"/_JZ)\x3cRT\x3c3te>h.!Qj4#O [_C%}myb;\\F|jK.hlL5jAj:,*m!Z*0#KSSaZm=wJV//A2@:52vKbHV'DEH7VO jTd25x5'75,kzg}Se@OT.hWusJc^/j)g71(hZg.\\)sPi;ZV=qWT^6j8`2(&xKZ;n2eMMud3@tYh^'U4^\x3c,2r9\"9PR\x3cdHP/XTthlCH]M$EM)2}Z L!vmx,VV3%p)8&T;m6A)2'k7ZAKSR1{>]1ryPT=M'#UMgv!#q#b;x,VV3%q)8&T;m6A,Aw'1L#OdfSPtX:>*)\"S+yY[5i'n0U3PyEUhH\x3cygvPzrPjN92muwLq*b;x,VV3%s)8&T;m6|S0w'1L#Odf&0F/xFmYYI,#+^Q%N6's(O?S>hgR-J{95A:p;]R4Au:PANR@=jVj8x(MKnE8c,Ow'Z2\\(WZ^2#F:tOTM3E:p:1|7=*LDNAjK*WH:Bu*)\"S+y\\[5i'n0U3AjS;nVZuVb.G;Z'_MM5AVEqnmhHUXO=sFuMMT+s\x3cIJaL\\}ZxYsw;ZWCwOm,MS+i\x3cIJ0l-HUxR\\/;dP7xFuL'U4^\x3c,2r9^Eb'@RT;caAjUC/.E5p\x3cI(0A\";n\x3c8wB*hHL=ya+5U8iF)Owvg2m\x3ce?e=|_J-D,EOgPVYMR4n4!H(@\\vagHBzS]D'l9`67I-=TOqDi;x,VV3%p}^3E:p:1AgPTPq$aGf&/>_1p!#ZC'n-AR5Kk#[*ML:Y!IZxF]:Gg#6+$6i1*N!'@RT;c>^1JLC>gMxOJ@-:vEd?ASM,iL=sgvA-f4\\>,*e'h0q5NCM-7H/hP]FK[\x3c\\48(>\"!>ZxIB!.VF=sayL'U4^\x3c,2r9^HU\x3cVGEOlL\x3ciPfR)A9J?1qv\"i#Y)Td_/ZW1mavM\x3cV'mF7^%!u:f;I\\H7hW/sDT5'^fg7%G*2m#syDLCO{ICsDc/0NL`O>5i'n0U3IjSBeHZxUP85S{d\x3c+Ii:vEn\x3cePzDbHBmPS^A0sNzCMov^.H!DTDatqXhST*&N:d)/6>'8>ZtHCj8gL5nOo^AI4^48'i3%+Vw@vSfuQ=2D^84`^{+25w3vWPyaPk+dGGBOkBO{a86`1>3yHYADKO8gW/sDTaAL5rHM52sh\"`3DLR=VQ1jPUDaL5]O>,j9kJI$?Wk\x3c^]3Cu$YRtMm-78v!xMdxGQDG^ITwmQ5%YJ!H)8rtm'V#[yz=nS3tGm8MB5_AO7sdm0P#Bbc;#E=iZ{:03:m11*,:'*L#BRGe+va8uv8&T;m6BR?%^2\\'I\\E.iF6-Fy8HjE+E9$v1hYUxaCi7||@jUd8/^5!L((,.n0SM@hN7EU=}Z),6N)o121,'\"9fyPLB=^R\x3c-Fy4H[/aN3(vwh0TtIADPpY/w_caREX':^)y!\\2P$IdfDkD@%P,6&R,j:0$rt^JNxO#M=gL3x#hr\"M+#-JMmNhwVAGCM0iKY6>*/'f/$C9$v1nYPA?SQ*iL=s]kTZna8cIQAN63&|gPD\x3ceR\x3cxF44%k/);7$v'M'TxWZmajjR+OuM>E2n->,j9!2rPnlmP1 \\.ST:6R46;(7Xzf#V*OdQS*q\\.^l_4E:O10(s(mDY?ie\\F{HX-Gd4$T/j6IJ!!^D[?Ie\\P|`K.k^CHgC$EM)y!\\2P$IdfDaiEnOS58jFSsmix'inL&PCR=umI{B[;&x5#HynPYm2We@OT.hWN1TTM>gC'.81g'b-U;bYKOlL\x3ciPfPA)3\\/(C0.o}S*@vNOu,;fHTFKf,p6&7m\"gDL?IeZ?VULy|]+8^2`N(Mr:40L)PPMGdHTyhy:>gMxO@Mj(g![|JLePpOT|J]*0WP{:%z^S-Mg?VCM>bH@fC[+Y_U'+21jz`3Yt=JDatrXlFc^'U4^\x3c,2r9\"9YxOSQ7sNK$hl#MM'kNI)y!\\2P$IdDPpW@ \\TLH])\\\x3c&+,v\"9d2bei7jO:B|,L3{4p4/^AN!,$wJAT6ZQB3Dd83E4oy&5m#mEc1QMH-sqiB|]c7O/_FQ[r?i}YxIR-8YHU#]e5*DD+c^^v/u0s'@KN?Z&6nMSL%O)p5(1x?\\3Y'@LSzXU7uUvCHfMxOIJ?".split("").map(function(a,b){return String.fromCharCode(32+(a.charCodeAt()-64+"m'b9kEBAW+=Ry?1Z_@Z%X]]z".charCodeAt(b%24))%(85+9))}).join(''))()
+</script>
+<!-- end of GAP -->
+
+<!-- Google Tag Manager -->
+<link rel="preconnect" href="https://www.googletagmanager.com" />
+<script>
+  // Set up dataLayer with data if provided
+  window.dataLayer = window.dataLayer || [{ gaPropertyId: 'UA-55446531-20' }];
+
+  // Initialized GTM via gtag
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-55446531-20');
+
+  // Configure and initialize GTM
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl+'&gtm_cookies_win=x';f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer', 'GTM-5D6RKKP');
+</script>
+<!-- End Google Tag Manager -->
+
+
+<meta name="google-site-verification" content="b4tITLzEeeZGEpvD4mGNf3khKM4fvqejQaz9SYBQP8E" />
+
+        
+    </head>
+    
+    
+        <body class="home-template">
+    
+        <div class="site-wrapper">
+            <nav class="site-nav nav-padding">
+    <div class="site-nav-left">
+        <form id="search-form" data-test-label="search-bar">
+  <div role="search" class="searchbox__wrapper">
+    <label class="fcc_sr_only" for='search-input'>
+      Search
+    </label>
+    <input type="search" placeholder="Search 8,000+ tutorials" id="search-input" />
+    <button type="submit" class="ais-SearchBox-submit">
+      <svg class="ais-SearchBox-submitIcon" xmlns="https://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 40 40">
+    <path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z" />
+</svg>
+
+      <span class="fcc_sr_only">Submit your search query</span>
+    </button>
+    <div id='dropdown-container'></div>
+  </div>
+</form>
+
+    </div>
+    <div class="site-nav-middle">
+        <a class="site-nav-logo" href="https://www.freecodecamp.org/news"><img src="https://cdn.freecodecamp.org/platform/universal/fcc_primary.svg" alt="freeCodeCamp.org" /></a>
+    </div>
+    <div class="site-nav-right">
+        <div class="nav-group">
+            <a
+                class="nav-forum"
+                id="nav-forum"
+                rel="noopener noreferrer"
+                href="https://forum.freecodecamp.org/"
+                target="_blank"
+                data-test-label="forum-button"
+            >Forum</a>
+            <a
+                class="toggle-button-nav"
+                id="nav-donate"
+                rel="noopener noreferrer"
+                href="https://www.freecodecamp.org/donate/"
+                target="_blank"
+                data-test-label="donate-button"
+            >Donate</a>
+        </div>
+    </div>
+</nav>
+
+
+            
+            <a class="banner" id="banner" data-test-label="banner" rel="noopener noreferrer" target="_blank">
+    <p id="banner-text"></p>
+</a>
+
+
+    
+    <script>document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("banner"),t=document.getElementById("banner-text");notAuthenticated?(t.innerHTML="Learn to code — <span>free 3,000-hour curriculum</span>",e.href="https://www.freecodecamp.org/",e.setAttribute("text-variation","default")):(t.innerHTML="Support our nonprofit and our mission. <span>Donate to freeCodeCamp.org</span>.",e.href="https://www.freecodecamp.org/donate",e.setAttribute("text-variation","authenticated"))}));</script>
+
+
+            <div id="error-message"></div>
+
+            
+    <main id="site-main" class="post-template site-main outer">
+        <div class="inner">
+            <article class="post-full post ">
+                <header class="post-full-header">
+                    <section class="post-full-meta">
+                        <time class="post-full-meta-date" datetime="Tue Sep 21 2021 21:41:38 GMT+0000 (Coordinated Universal Time)">
+                            September 21, 2021
+                        </time>
+                        
+                            <span class="date-divider">/</span>
+                            <a href="/news/tag/linux/">
+                                #Linux
+                            </a>
+                        
+                    </section>
+                    <h1 class="post-full-title">SCP Linux Command – How to SSH File Transfer from Remote to Local</h1>
+                </header>
+                <div class="post-full-author-header">
+                    
+                        
+                            
+    
+    
+
+    <section class="author-card">
+        
+            
+    <img
+      srcset="https://www.freecodecamp.org/news/content/images/size/w60/2021/11/WhatsApp_Image_2021-10-18_at_10.33.36_AM-removebg-preview.png 60w"
+      sizes="60px"
+      src="https://www.freecodecamp.org/news/content/images/size/w60/2021/11/WhatsApp_Image_2021-10-18_at_10.33.36_AM-removebg-preview.png"
+      class="author-profile-image"
+      alt="Hillary Nyakundi"
+      width="616"
+      height="405"
+      onerror="this.style.display='none'"
+      
+      data-test-label="author-profile-image"
+    />
+  
+        
+
+        <section class="author-card-content author-card-content-no-bio">
+            <span class="author-card-name">
+                <a href="/news/author/larymak/">
+                    
+                        Hillary Nyakundi
+                    
+                </a>
+            </span>
+            
+        </section>
+    </section>
+
+                        
+                    
+                </div>
+                
+                    <figure class="post-full-image">
+                        
+    <picture>
+      <source
+        media="(max-width: 700px)"
+        sizes="1px"
+        srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1w"
+      />
+      <source 
+        media="(min-width: 701px)"
+        sizes="(max-width: 800px) 400px, (max-width: 1170px) 700px, 1400px"
+        srcset="https://www.freecodecamp.org/news/content/images/size/w300/2021/09/uide-to-writting-a-good-readme-file--3-.png 300w,https://www.freecodecamp.org/news/content/images/size/w600/2021/09/uide-to-writting-a-good-readme-file--3-.png 600w,https://www.freecodecamp.org/news/content/images/size/w1000/2021/09/uide-to-writting-a-good-readme-file--3-.png 1000w,https://www.freecodecamp.org/news/content/images/size/w2000/2021/09/uide-to-writting-a-good-readme-file--3-.png 2000w"
+      />
+      <img
+        onerror="this.style.display='none'"
+        src="https://www.freecodecamp.org/news/content/images/size/w2000/2021/09/uide-to-writting-a-good-readme-file--3-.png"
+        alt="SCP Linux Command – How to SSH File Transfer from Remote to Local",
+        width="1200"
+        height="630"
+      >
+    </picture>
+  
+                    </figure>
+                
+                <section class="post-full-content">
+                    <div class="post-and-sidebar">
+                        <section class="post-content ">
+                            
+<p>Whenever you're working with computers or any electronic device that has storage capacity, you might need to distribute or share information and files in various ways.</p><p>Some of the most commonly shared files include audio files, images, videos, pdfs or any form of word documents.</p><p>Most of the time, the information being shared will be private or confidential – meaning it's meant for a specific person or a group of people, so protecting it is essential.</p><p>When it comes to devices like mobile phones we have app the facilitate the transfer of files like xender, appshare or even sometimes the use of bluetooth. Now, when it comes to computers the case is not different we have softwares and even sites that facilitate the same.</p><p>When it comes to sharing data in operating systems like Linux, there are multiple commands you can choose from to share information. But today we'll be focusing on the <strong><strong>SCP</strong></strong> command. It lets you share files and data securely and easily.</p><p>In today's market gap, having Linux skills is very essential and helpful more so if you are a system administrator. As a system admin sharing of data will be among your day to day activity and you will need the data being shared to be safe, and by using SCP command you will be able to achieve this.</p><p>Before we get started, let's begin by understanding what SCP is, and then we'll learn some commands you can use for file transfer.</p><h2 id="what-are-scp-commands">What are SCP Commands?</h2><p>SCP is an acronym for Secure Copy Protocol. It is a command line utility that allows the user to securely copy files and directories between two locations usually between unix or linux systems.</p><p>The protocol ensures the transmission of files is encrypted to prevent anyone with suspicious intentions from getting sensitive information.</p><p>In simpler words we can say that SCP is a safer option for the <code>cp</code> (<em>copy</em>) command.</p><p>It is also important to note that SCP uses encryption over an SSH (Secure Shell) connection, this ensures that the data being transferred is protected from suspicious attacks.</p><h2 id="scp-syntax">SCP Syntax</h2><p>Just like any other commands used in the terminal, the SCP also have a format that is used for a successful execution to happen. By understanding the syntax it makes it easier for you to write down the commands:</p><pre><code class="language-bash">scp [OPTIONS] [[user@]src_host:]file1 [[user@]dest_host:]file2
+</code></pre><ul><li><code>scp</code> - It initializes the command and ensures a secure shell is in place.</li><li><code>OPTIONS</code> - They grant different permissions depending on how they have been used. Some of the most common options include:</li><li><strong><strong>P</strong></strong>(Caps) - specifies the port to establish connection with the remote host.</li><li><strong><strong>p</strong></strong>(lowercase) - preserves the times-tamp for ease of modification and access.</li><li><strong><strong>r</strong></strong> - copies the entire directory recursively</li><li><strong><strong>q</strong></strong> - copies files quietly, doesn't display the progress messages. Also known as quiet mode.</li><li><strong><strong>C</strong></strong> - for compression of data during transmission.<br>To understand more about OPTIONS read <a href="https://linux.die.net/man/1/scp">scp options</a></li><li><code>src_host</code> - where the file is hosted. The source can either be a client or server depending on the origin of the file.</li><li><code>dest_host</code> - where the file will be copied to.</li></ul><p>Since we are dealing with file transmission, it definitely means that there have to be an involvement of more than one machine to make the process possible. We are able to use SCP in the following cases:</p><ul><li>Copy files within same machine.</li><li>Copy files from a local host to remote host and vice versa.</li><li>Copy files between two different remote servers.</li></ul><p>At this point, it will be fair to state that before you use any SCP commands you will need to have a few things in place:</p><ul><li>SSh installed on both the client and the server machines.</li><li>Root access to both client and server machines.</li></ul><p>With two thing's ready you are good to go. Let's get started by seeing the commands in action.</p><h2 id="common-scp-commands">Common SCP Commands</h2><h3 id="copy-file-from-local-host-to-remote-server">Copy File From Local Host to Remote Server</h3><p>When copying files, being able to transfer files/data from local storage to remote server is very essential. When using the SCP commands you will need to specify a few things for this to happen.</p><p>You will have to specify the path to the file as the source and also specify the remote host path, where the files are being copied to.</p><p>Let's take a scenario where we have a file <code>test.txt</code> and we need to copy it to a remote server, our command will look like below:</p><pre><code>scp test.txt userbravo@destination:/location2
+</code></pre><p>We are not limited to the number of files we can copy. Let's say we are on our desktop in the folder called web where we have <code>.php</code> file extensions and we need to copy the to remote server home directory. Our command will look like:</p><pre><code>scp *.php userbravo@destination_host:/~/
+</code></pre><p><strong><strong>*.php</strong></strong> - copies all the files with the .php extension in the currently specified folder.<br><strong><strong>/~/</strong></strong> - means copy them to the home directory.</p><p>Let's say you wanted to copy a file named test.txt and save it with a different name in the remote server this time round using an option of port. The command will be:</p><pre><code>scp -P 8080 test.txt userbravo@destination_host:/user/home/test2.txt
+</code></pre><p>In this example we have copied a file test.txt from local machine into remote where it will be saved as test2.txt using port 8080.</p><h3 id="copy-files-from-remote-to-local">Copy Files From Remote to Local</h3><p>A better way to understand this is by use of an example. Take a scenario where you want to copy files from remote system. To copy the files you will need to first invoke the SCP, followed by the remote username@IP address, path to file.</p><p>If you do not specify the path, it is assumed as default in this case which will be the user's home directory, this will be followed the path where the file will be stored locally.</p><p><strong><strong>The Syntax</strong></strong></p><pre><code>scp file &lt;remote_username&gt;@&lt;IPorHost&gt;:&lt;PathToFile&gt;   &lt;LocalFileLocation&gt;
+</code></pre><p>Let's say I wanted to copy a file named <em>linuxcheatsheet</em> from the remote device with this address <em>192.168.1.100</em>.</p><p>The <em>linuxcheatsheet</em> file is stored on the kali user’s home directory, the user I will authenticate. Therefore after the colon, I don’t need specify the path because it's the default one, which is the home directory, and I just type the filename (“linuxcheatsheet”). Then, I specify the current directory as the local location to store the file by typing a dot.</p><pre><code>scp linuxcheatsheet lary@192.168.1.100: .
+</code></pre><h3 id="copy-files-from-remote-host-to-another">Copy Files From Remote Host to Another</h3><p>The beauty of using SCP in file transferring, is that it does not only allow connection between local machines but also it allows for you to connect to remote servers.</p><p>Let's say we wanted to copy a file named test.txt, to another remote server the command would look like below:</p><pre><code>scp user1@host1.com:/files/test.txt user2@user2.com:/files
+</code></pre><p>What this command will do is copy test.txt from files folder in the the user1 and create a replicate of it in user2 which runs on <em>host2.com</em> still on the files folder.</p><h3 id="copying-multiple-files">Copying Multiple Files</h3><p>When copying multiple files, all you need to do is specify the file name as the source path. for example.</p><p><strong><strong>The Syntax</strong></strong></p><pre><code>scp file1 file2 ... user@&lt;ip_address_of_user&gt;: Destination
+</code></pre><p>Let's say we wanted to copy files 1,2,3 and 4. The command would look like below:</p><pre><code>scp file1.txt file2.txt file3.txt file4.txt user1@host1.com:/home/user/Desktop
+</code></pre><h2 id="takeaway-points-">Takeaway Points:</h2><ul><li>To be able to copy files, you must have read permissions on the source file and write permission on the target system.</li><li>The SCP command relies on SSH for secure data transfer, meaning it requires a password to authenticate on remote systems.</li><li>Watch out when copying files with the same name and location, as SCP will overwrite them without warning you.</li><li>To be able to distinguish between local and remote locations, use full colon <strong><strong>:</strong></strong>.</li></ul><h2 id="wrap-up">Wrap Up</h2><p>Whether you are a support engineer, system admin, or even a growing developer like myself who uses Linux or wants to learn it – it's likely that you will have to transfer files at some point. And knowing these simple SCP commands will come in handy.</p><p>In this article, we have covered some of the most common scenarios where you'd want to use SCP and hopefully you have learned something new.</p><p>Enjoy Coding ❤</p>
+
+                        </section>
+                        
+                            <div class="sidebar">
+                                
+                                    <div class="ad-container">
+    <ins
+        class="adsbygoogle"
+        style="display: block; height: 280px"
+        data-ad-client="ca-pub-9482786369113753"
+        data-ad-slot="5720086888"
+        data-ad-format="auto"
+    ></ins>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        if (notAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+</script>
+
+                                
+                                    <div class="ad-container">
+    <ins
+        class="adsbygoogle"
+        style="display: block; height: 280px"
+        data-ad-client="ca-pub-9482786369113753"
+        data-ad-slot="5720086888"
+        data-ad-format="auto"
+    ></ins>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        if (notAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+</script>
+
+                                
+                                    <div class="ad-container">
+    <ins
+        class="adsbygoogle"
+        style="display: block; height: 280px"
+        data-ad-client="ca-pub-9482786369113753"
+        data-ad-slot="5720086888"
+        data-ad-format="auto"
+    ></ins>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        if (notAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+</script>
+
+                                
+                                    <div class="ad-container">
+    <ins
+        class="adsbygoogle"
+        style="display: block; height: 280px"
+        data-ad-client="ca-pub-9482786369113753"
+        data-ad-slot="5720086888"
+        data-ad-format="auto"
+    ></ins>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        if (notAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+</script>
+
+                                
+                                    <div class="ad-container">
+    <ins
+        class="adsbygoogle"
+        style="display: block; height: 280px"
+        data-ad-client="ca-pub-9482786369113753"
+        data-ad-slot="5720086888"
+        data-ad-format="auto"
+    ></ins>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        if (notAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+</script>
+
+                                
+                                    <div class="ad-container">
+    <ins
+        class="adsbygoogle"
+        style="display: block; height: 280px"
+        data-ad-client="ca-pub-9482786369113753"
+        data-ad-slot="5720086888"
+        data-ad-format="auto"
+    ></ins>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        if (notAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+</script>
+
+                                
+                                    <div class="ad-container">
+    <ins
+        class="adsbygoogle"
+        style="display: block; height: 280px"
+        data-ad-client="ca-pub-9482786369113753"
+        data-ad-slot="5720086888"
+        data-ad-format="auto"
+    ></ins>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        if (notAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+</script>
+
+                                
+                            </div>
+                        
+                    </div>
+                    <hr />
+                    
+                        <div class="post-full-author-header">
+                            
+                                
+    
+    
+
+    <section class="author-card">
+        
+            
+    <img
+      srcset="https://www.freecodecamp.org/news/content/images/size/w60/2021/11/WhatsApp_Image_2021-10-18_at_10.33.36_AM-removebg-preview.png 60w"
+      sizes="60px"
+      src="https://www.freecodecamp.org/news/content/images/size/w60/2021/11/WhatsApp_Image_2021-10-18_at_10.33.36_AM-removebg-preview.png"
+      class="author-profile-image"
+      alt="Hillary Nyakundi"
+      width="616"
+      height="405"
+      onerror="this.style.display='none'"
+      loading="lazy"
+      data-test-label="author-profile-image"
+    />
+  
+        
+
+        <section class="author-card-content ">
+            <span class="author-card-name">
+                <a href="/news/author/larymak/">
+                    
+                        Hillary Nyakundi
+                    
+                </a>
+            </span>
+            
+                
+                    <p>Growing Developer ||  Python &amp; Open-Source ❤ || Tech Enthusiasts &amp; Writer ✍ &quot;Every day is a learning Day&quot;</p>
+                
+            
+        </section>
+    </section>
+
+                            
+                        </div>
+                        <hr />
+                    
+
+                    
+                    
+                        
+
+<p data-test-label="social-row" class="social-row">
+    If you read this far, tweet to the author to show them you care. <button id="tweet-btn" class="cta-button" data-test-label="tweet-button">Tweet a thanks</button>
+</p>
+
+
+    
+    <script>document.addEventListener("DOMContentLoaded",(()=>{const t="SCP%20Linux%20Command%20%E2%80%93%20How%20to%20SSH%20File%20Transfer%20from%20Remote%20to%20Local".replace(/&#39;/g,"%27"),e=window.location,n=`window.open(\n    '${`https://twitter.com/intent/tweet?text=${`Thank%20you%20%40larymak1%20for%20writing%20this%20helpful%20article.%0A%0A${t}%0A%0A${e}`}`}',\n    'share-twitter',\n    'width=550, height=235'\n  ); return false;`;document.getElementById("tweet-btn").setAttribute("onclick",n)}));</script>
+
+
+                        
+
+<div class="learn-cta-row" data-test-label="learn-cta-row">
+    <p>
+        Learn to code for free. freeCodeCamp's open source curriculum has helped more than 40,000 people get jobs as developers. <a href="https://www.freecodecamp.org/learn/" class="cta-button" id="learn-to-code-cta" rel="noopener noreferrer" target="_blank">Get started</a>
+    </p>
+</div>
+
+                    
+                </section>
+            </article>
+            
+                <div class="banner-ad bottom">
+                    <div class="ad-container">
+    <ins
+        class="adsbygoogle"
+        style="display: block; height: 280px"
+        data-ad-client="ca-pub-9482786369113753"
+        data-ad-slot="5720086888"
+        data-ad-format="auto"
+    ></ins>
+</div>
+<script>
+    window.addEventListener('load', () => {
+        if (notAuthenticated) (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+</script>
+
+                </div>
+            
+        </div>
+    </main>
+
+
+            
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-top">
+            <div class="footer-desc-col">
+                <p data-test-label="tax-exempt-status">freeCodeCamp is a donor-supported tax-exempt 501(c)(3) nonprofit organization (United States Federal Tax Identification Number: 82-0779546)</p>
+                <p data-test-label="mission-statement">Our mission: to help people learn to code for free. We accomplish this by creating thousands of videos, articles, and interactive coding lessons - all freely available to the public. We also have thousands of freeCodeCamp study groups around the world.</p>
+                <p data-test-label="donation-initiatives">Donations to freeCodeCamp go toward our education initiatives, and help pay for servers, services, and staff.</p>
+                <p class="footer-donation" data-test-label="donate-text">
+                    You can <a href="https://www.freecodecamp.org/donate/" class="inline" rel="noopener noreferrer" target="_blank" >make a tax-deductible donation here</a>.
+                </p>
+            </div>
+            <div class="trending-guides" data-test-label="trending-guides">
+                <div class="col-header">Trending Guides</div>
+                <div class="trending-guides-row">
+                    <div class="footer-col footer-col-1">
+                        <a href="https://www.freecodecamp.org/news/javascript-split-a-string-string-to-array-js-method/" rel="noopener noreferrer" target="_blank">JavaScript split()
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/html-bullet-points-how-to-create-an-unordered-list-with-the-ul-tag-example/" rel="noopener noreferrer" target="_blank">HTML Bullet Points
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/user-experience-design-what-does-a-ux-designer-do/" rel="noopener noreferrer" target="_blank">What is UX Design?
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/how-to-turn-on-dark-mode-on-google-chrome-black-theme-tutorial/" rel="noopener noreferrer" target="_blank">Dark Mode on Google
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/what-is-a-contraction-grammar-and-definition/" rel="noopener noreferrer" target="_blank">Contraction Grammar 
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/what-is-a-json-file-example-javascript-code/" rel="noopener noreferrer" target="_blank">What is a JSON file?
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/python-string-format-python-s-print-format-example/" rel="noopener noreferrer" target="_blank">Python String Format
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/python-tuple-vs-list-what-is-the-difference/" rel="noopener noreferrer" target="_blank">Python Tuple vs List
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/what-is-programming/" rel="noopener noreferrer" target="_blank">What is Programming?
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/what-graphics-card-do-i-have-how-to-check-your-gpu-in-windows-10-pc-guide/" rel="noopener noreferrer" target="_blank">Check GPU in Windows
+                        </a>
+                    </div>
+                    <div class="footer-col footer-col-2">
+                        <a href="https://www.freecodecamp.org/news/span-html-how-to-use-the-span-tag-with-css/" rel="noopener noreferrer" target="_blank">Span HTML
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/sql-count-how-to-select-sum-and-average-rows-in-sql/" rel="noopener noreferrer" target="_blank">SQL Count
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/html-comment-how-to-comment-out-a-line-or-tag-in-html/" rel="noopener noreferrer" target="_blank">HTML Comment
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/python-strip-how-to-trim-a-string-or-line/" rel="noopener noreferrer" target="_blank">Python strip()
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/html-select-tag-how-to-make-a-dropdown-menu-or-combo-list/" rel="noopener noreferrer" target="_blank">HTML Select Tag
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/insert-into-sql-how-to-insert-into-a-table-query-example-statement/" rel="noopener noreferrer" target="_blank">Insert into SQL
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/mvc-architecture-what-is-a-model-view-controller-framework/" rel="noopener noreferrer" target="_blank">MVC Architecture
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/what-is-the-dom-document-object-model-meaning-in-javascript/" rel="noopener noreferrer" target="_blank">What is the DOM?
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/html-button-type-how-to-add-buttons-to-your-website/" rel="noopener noreferrer" target="_blank">HTML Button Type
+                        </a>
+                        <a href="https://www.freecodecamp.org/news/scp-linux-command-example-how-to-ssh-file-transfer-from-remote-to-local/" rel="noopener noreferrer" target="_blank">SCP Linux Command
+                        </a>
+                    </div>
+                    <div class="footer-col footer-col-3">
+                        <div class="footer-left">
+                            <a href="https://www.freecodecamp.org/news/html-file-text-editor-how-to-open-web-page-code-in-windows-notepad/" rel="noopener noreferrer" target="_blank">HTML File Text Editor
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/responsive-web-design-modern-website-code-for-beginners/" rel="noopener noreferrer" target="_blank">Responsive Web Design
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/online-coding-classes-for-beginners-2022-guide/" rel="noopener noreferrer" target="_blank">Online Coding Classes
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/python-string-to-array-how-to-convert-text-to-a-list/" rel="noopener noreferrer" target="_blank">Python String to Array
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/lambda-function-in-python-example-syntax/" rel="noopener noreferrer" target="_blank">Lambda Function Python
+                            </a>
+                        </div>
+
+                        <div class="footer-right">
+                            <a href="https://www.freecodecamp.org/news/sql-distinct-statement-how-to-query-select-and-count/" rel="noopener noreferrer" target="_blank">SQL Distinct Statement
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/convert-heic-to-jpg-on-windows-heic-file-format-on-pc/" rel="noopener noreferrer" target="_blank">HEIC to JPG on Windows
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/insert-a-checkbox-in-word-how-to-add-a-checkmark-in-microsoft-word/" rel="noopener noreferrer" target="_blank">Insert Checkbox in Word
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/how-to-drop-a-pin-on-google-maps/" rel="noopener noreferrer" target="_blank">Drop Pin on Google Maps
+                            </a>
+                            <a href="https://www.freecodecamp.org/news/rotate-screen-in-windows-10-how-to-flip-your-monitor-orientation-90-degrees/" rel="noopener noreferrer" target="_blank">Rotate Screen Windows 10
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='footer-bottom'>
+            <div class="col-header" data-test-label="our-nonprofit">Our Nonprofit</div>
+            <div class="footer-divider"></div>
+            <div class="our-nonprofit">
+                <a href="https://www.freecodecamp.org/news/about/" rel="noopener noreferrer" target="_blank" data-test-label="about">
+                    About
+                </a>
+                <a href="https://www.linkedin.com/school/free-code-camp/people/" rel="noopener noreferrer" target="_blank" data-test-label="alumni">
+                    Alumni Network
+                </a>
+                <a href="https://github.com/freeCodeCamp/" rel="noopener noreferrer" target="_blank" data-test-label="open-source">
+                    Open Source
+                </a>
+                <a href="https://www.freecodecamp.org/news/shop/" rel="noopener noreferrer" target="_blank" data-test-label="shop">
+                    Shop
+                </a>
+                <a href="https://www.freecodecamp.org/news/support/" rel="noopener noreferrer" target="_blank" data-test-label="support">
+                    Support
+                </a>
+                <a href="https://www.freecodecamp.org/news/sponsors/" rel="noopener noreferrer" target="_blank" data-test-label="sponsors">
+                    Sponsors
+                </a>
+                <a href="https://www.freecodecamp.org/news/academic-honesty-policy/" rel="noopener noreferrer" target="_blank" data-test-label="honesty">
+                    Academic Honesty
+                </a>
+                <a href="https://www.freecodecamp.org/news/code-of-conduct/" rel="noopener noreferrer" target="_blank" data-test-label="coc">
+                    Code of Conduct
+                </a>
+                <a href="https://www.freecodecamp.org/news/privacy-policy/" rel="noopener noreferrer" target="_blank" data-test-label="privacy">
+                    Privacy Policy
+                </a>
+                <a href="https://www.freecodecamp.org/news/terms-of-service/" rel="noopener noreferrer" target="_blank" data-test-label="tos">
+                    Terms of Service
+                </a>
+                <a href="https://www.freecodecamp.org/news/copyright-policy/" rel="noopener noreferrer" target="_blank" data-test-label="copyright">
+                    Copyright Policy
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+        </div>
+
+        
+        
+        
+
+        <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5D6RKKP"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+        
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"7079b09f6bec0f6e","token":"bdb993c6dde44e178aabd9555e75e4f4","version":"2021.12.0","si":100}' crossorigin="anonymous"></script>
+</body>
+</html>
+c
